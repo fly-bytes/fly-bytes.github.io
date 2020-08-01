@@ -1,0 +1,350 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search> 
+  
+    
+    <entry>
+      <title></title>
+      <url>/2020/08/01/docker/</url>
+      <content type="html"><![CDATA[<h1 id="docker"><a href="#docker" class="headerlink" title="docker"></a>docker</h1><h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install docker</span><br></pre></td></tr></table></figure>
+
+<h2 id="配置网易源"><a href="#配置网易源" class="headerlink" title="配置网易源"></a>配置网易源</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">vi &#x2F;etc&#x2F;docker&#x2F;daemon.json </span><br><span class="line"></span><br><span class="line">&#123; &quot;registry-mirrors&quot;: [&quot;http:&#x2F;&#x2F;hub-mirror.c.163.com&quot;] &#125; </span><br><span class="line"></span><br><span class="line">systemctl restart docker.service</span><br></pre></td></tr></table></figure>
+
+<h2 id="软件安装"><a href="#软件安装" class="headerlink" title="软件安装"></a>软件安装</h2><h3 id="安装mysql"><a href="#安装mysql" class="headerlink" title="安装mysql"></a>安装mysql</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker pull mysql &amp;&amp; docker run --name mysql -p 3306:3306 -e MYSQL_ROOT_PASSWORD&#x3D;123456 -d mysql</span><br></pre></td></tr></table></figure>
+
+<p>目录和数据挂载</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker cp 容器ID:&#x2F;etc&#x2F;mysql&#x2F;my.cnf &#x2F;home&#x2F;lbx&#x2F;mysql&#x2F;conf</span><br></pre></td></tr></table></figure>
+
+<p>进入容器</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker exec -it 容器ID &#x2F;bin&#x2F;bash</span><br></pre></td></tr></table></figure>
+
+<h3 id="安装redis"><a href="#安装redis" class="headerlink" title="安装redis"></a>安装redis</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker pull redis &amp;&amp; docker run -itd --name redis-test -p 6379:6379 redis</span><br></pre></td></tr></table></figure>
+
+<h2 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h2><h3 id="没有启动"><a href="#没有启动" class="headerlink" title="没有启动"></a>没有启动</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Cannot connect to the Docker daemon at unix:&#x2F;&#x2F;&#x2F;var&#x2F;run&#x2F;docker.sock. Is the docker daemon running?</span><br><span class="line"></span><br><span class="line">systemctl daemon-reload&amp;&amp;systemctl restart docker.service</span><br></pre></td></tr></table></figure>
+
+<h3 id="设置开机启动"><a href="#设置开机启动" class="headerlink" title="设置开机启动"></a>设置开机启动</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl enable docker.service</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      
+        
+    </entry>
+    
+    <entry>
+      <title></title>
+      <url>/2020/08/01/Centos%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/</url>
+      <content type="html"><![CDATA[<h1 id="Centos环境配置"><a href="#Centos环境配置" class="headerlink" title="Centos环境配置"></a>Centos环境配置</h1><p>下面是centos常用配置项</p>
+<h2 id="基础配置"><a href="#基础配置" class="headerlink" title="基础配置"></a>基础配置</h2><h3 id="网络配置"><a href="#网络配置" class="headerlink" title="网络配置"></a>网络配置</h3><h4 id="ip配置"><a href="#ip配置" class="headerlink" title="ip配置"></a>ip配置</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vi &#x2F;etc&#x2F;sysconfig&#x2F;network-scripts&#x2F;ifcfg-ens33</span><br></pre></td></tr></table></figure>
+
+<p>加入ip,  网关，子网掩码</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">TYPE&#x3D;Ethernet</span><br><span class="line">BOOTPROTO&#x3D;&quot;static&quot;</span><br><span class="line">NAME&#x3D;ens33</span><br><span class="line">UUID&#x3D;e3c25d81-9e26-47df-ab24-68856fe366c8</span><br><span class="line">DEVICE&#x3D;ens33</span><br><span class="line">ONBOOT&#x3D;yes</span><br><span class="line"></span><br><span class="line">IPADDR&#x3D;192.168.0.200</span><br><span class="line">NETMASK&#x3D;255.255.255.0</span><br><span class="line">GETWAY&#x3D;192.168.0.1</span><br><span class="line">DNS1&#x3D;114.114.114.114</span><br><span class="line">DNS2&#x3D;8.8.8.8</span><br></pre></td></tr></table></figure>
+
+<p>重启网络</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">service network restart</span><br></pre></td></tr></table></figure>
+
+<h4 id="端口管理"><a href="#端口管理" class="headerlink" title="端口管理"></a>端口管理</h4><ol>
+<li><p>查看已开放的端口</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">firewall-cmd --list-ports </span><br></pre></td></tr></table></figure>
+</li>
+<li><p>开放端口</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">firewall-cmd --zone&#x3D;public --add-port&#x3D;3338&#x2F;tcp --permanent </span><br></pre></td></tr></table></figure>
+</li>
+<li><p>重启防火墙</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">firewall-cmd --reload</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>关闭端口 </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">firewall-cmd --zone&#x3D;public --remove-port&#x3D;3338&#x2F;tcp --permanent</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<h3 id="时间同步"><a href="#时间同步" class="headerlink" title="时间同步"></a>时间同步</h3><ol>
+<li><p>安装ntpdate工具 </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum -y install ntp ntpdat</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>设置系统时间与网络时间同步</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ntpdate cn.pool.ntp.org</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>将系统时间写入硬件时间 </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hwclock --systohc </span><br></pre></td></tr></table></figure>
+</li>
+<li><p>强制系统时间写入CMOS中防止重启失效 </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">clock -w </span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<h3 id="软件安装"><a href="#软件安装" class="headerlink" title="软件安装"></a>软件安装</h3><h4 id="安装rz-sz"><a href="#安装rz-sz" class="headerlink" title="安装rz sz"></a>安装rz sz</h4><p>rz上传文件，sz导出文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install lrzsz</span><br></pre></td></tr></table></figure>
+
+<h4 id="安装wget"><a href="#安装wget" class="headerlink" title="安装wget"></a>安装wget</h4><p>wget常用来下载文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install wget </span><br></pre></td></tr></table></figure>
+
+<h4 id="安装mysql"><a href="#安装mysql" class="headerlink" title="安装mysql"></a>安装mysql</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker pull mysql:5.7</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li>运行容器，拷贝my.cnf到物理机</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -itd --name mysql-test -p 3306:3306 -e MYSQL_ROOT_PASSWORD&#x3D;123456 mysql</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>删除上一步建立的mysql,重新建立容器    </li>
+</ol>
+<p>运行容器</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">docker run --name mysql -p 3306:3306 -e MYSQL_ROOT_PASSWORD&#x3D;123456</span><br><span class="line">-v &#x2F;home&#x2F;lbx&#x2F;mysql&#x2F;data:&#x2F;var&#x2F;lib&#x2F;mysql-files:rw </span><br><span class="line">-v &#x2F;home&#x2F;lbx&#x2F;mysql&#x2F;log:&#x2F;var&#x2F;log&#x2F;mysql:rw</span><br><span class="line">-v &#x2F;home&#x2F;lbx&#x2F;mysql&#x2F;config&#x2F;my.cnf:&#x2F;etc&#x2F;mysql&#x2F;my.cnf:rw </span><br><span class="line">mysql:5.7</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li><p>开机启动</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker update --restart&#x3D;always containerId</span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<h4 id="安装jdk"><a href="#安装jdk" class="headerlink" title="安装jdk"></a>安装jdk</h4><ul>
+<li>搜索jdk </li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install java-1.8.0-openjdk</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>安装jdk</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install java-1.8.0-openjdk &amp;&amp; yum install java-1.8.0-openjdk-devel.x86_64</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>配置jdk环境变量</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vi &#x2F;etc&#x2F;profile</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<p>​      将如下配置添加至文件中，然后保存退出 </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">JAVA_HOME&#x3D;&#x2F;usr&#x2F;lib&#x2F;jvm&#x2F;java-1.8.0-openjdk-1.8.0.252.b09-2.el7_8.x86_64</span><br><span class="line">JRE_HOME&#x3D;$JAVA_HOME&#x2F;jre</span><br><span class="line">CLASS_PATH&#x3D;.:$JAVA_HOME&#x2F;lib&#x2F;dt.jar:$JAVA_HOME&#x2F;lib&#x2F;tools.jar:$JRE_HOME&#x2F;lib</span><br><span class="line">PATH&#x3D;$PATH:$JAVA_HOME&#x2F;bin:$JRE_HOME&#x2F;bin</span><br><span class="line">export JAVA_HOME JRE_HOME CLASS_PATH PATH</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>刷新环境变量</p>
+<p>source /etc/profile</p>
+</li>
+<li><p>测试jdk是否安装成功</p>
+<p>java、javac、jps是否有响应</p>
+</li>
+</ul>
+<h4 id="安装Maven"><a href="#安装Maven" class="headerlink" title="安装Maven"></a>安装Maven</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install maven &amp;&amp; vi &#x2F;etc&#x2F;maven&#x2F;setting.xml</span><br></pre></td></tr></table></figure>
+
+<p>配置阿里源用于加速,加入下面内容</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&lt;mirrors&gt;</span><br><span class="line">       &lt;mirror&gt;  </span><br><span class="line">             &lt;id&gt;alimaven&lt;&#x2F;id&gt;  </span><br><span class="line">             &lt;name&gt;aliyun maven&lt;&#x2F;name&gt;  </span><br><span class="line">             &lt;url&gt;http:&#x2F;&#x2F;maven.aliyun.com&#x2F;nexus&#x2F;content&#x2F;groups&#x2F;public&#x2F;&lt;&#x2F;url&gt;  </span><br><span class="line">             &lt;mirrorOf&gt;central&lt;&#x2F;mirrorOf&gt;  </span><br><span class="line">       &lt;&#x2F;mirror&gt;</span><br><span class="line">&lt;&#x2F;mirrors&gt;</span><br></pre></td></tr></table></figure>
+
+<h2 id="to-many-files-open解决"><a href="#to-many-files-open解决" class="headerlink" title="to many files open解决"></a>to many files open解决</h2><p>当服务器短时间内接收大量的请求，每次访问都将消耗一定资源（数据库连接或者文件IO），并发量在2000左右的时候tomcat服务开始抛出大量Too Many Open Files的异常，主要是文件IO一块的异常<br>主要问题是linux打开的文件句柄，socket过多</p>
+<h4 id="解决办法"><a href="#解决办法" class="headerlink" title="解决办法"></a>解决办法</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">1.查看当前用户的文件句柄限制  </span><br><span class="line">ulimit -a</span><br><span class="line"></span><br><span class="line">2. 用户级别的句柄数限制修改。  </span><br><span class="line">修改 &#x2F;etc&#x2F;security&#x2F;limits.conf  </span><br><span class="line">增加如下代码： （*表示所有用户）</span><br><span class="line"></span><br><span class="line">* soft nofile 65535</span><br><span class="line">* hard nofile 65535</span><br></pre></td></tr></table></figure>
+
+<p>注：硬限制表明soft限制中所能设定的最大值。 soft限制指的是当前系统生效的设置值。 hard限制值可以被普通用户降低。但是不能增加。 soft限制不能设置的比hard限制更高。 只有root用户才能够增加hard限制值。<br>可以最大设到：655350</p>
+<h3 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h3><p><a href="http://blog.csdn.net/shootyou/article/details/6579139">http://blog.csdn.net/shootyou/article/details/6579139</a></p>
+<h2 id="TCP并发连接优化"><a href="#TCP并发连接优化" class="headerlink" title="TCP并发连接优化"></a>TCP并发连接优化</h2><h4 id="查看linux服务器打开的scoket个数"><a href="#查看linux服务器打开的scoket个数" class="headerlink" title="查看linux服务器打开的scoket个数"></a>查看linux服务器打开的scoket个数</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">查看总共的scoket个数</span><br><span class="line">netstat -nat | wc -l</span><br><span class="line"></span><br><span class="line">查看已建立连接的socket个数</span><br><span class="line">netstat -nat | grep ESTABLISHED | wc -l</span><br><span class="line"></span><br><span class="line">查看等待关闭的scoket个数</span><br><span class="line">netstat -nat | grep CLOSE_WAIT | wc -l</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="TCP连接状态详解"><a href="#TCP连接状态详解" class="headerlink" title="TCP连接状态详解"></a>TCP连接状态详解</h4><p>LISTEN： 侦听来自远方的TCP端口的连接请求<br>SYN-SENT： 再发送连接请求后等待匹配的连接请求<br>SYN-RECEIVED：再收到和发送一个连接请求后等待对方对连接请求的确认<br>ESTABLISHED： 代表一个打开的连接<br>FIN-WAIT-1： 等待远程TCP连接中断请求，或先前的连接中断请求的确认<br>FIN-WAIT-2： 从远程TCP等待连接中断请求<br>CLOSE-WAIT： 等待从本地用户发来的连接中断请求<br>CLOSING： 等待远程TCP对连接中断的确认<br>LAST-ACK： 等待原来的发向远程TCP的连接中断请求的确认<br>TIME-WAIT： 等待足够的时间以确保远程TCP接收到连接中断请求的确认<br>CLOSED： 没有任何连接状态</p>
+<h4 id="大量TIME-WAIT的连接优化"><a href="#大量TIME-WAIT的连接优化" class="headerlink" title="大量TIME_WAIT的连接优化"></a>大量TIME_WAIT的连接优化</h4><p>客户端与服务器端建立TCP/IP连接后关闭SOCKET后，服务器端连接的端口状态为TIME_WAIT<br>vim /etc/sysctl.conf<br>编辑文件，加入以下内容：<br>net.ipv4.tcp_syncookies = 1<br>net.ipv4.tcp_tw_reuse = 1<br>net.ipv4.tcp_tw_recycle = 1<br>net.ipv4.tcp_fin_timeout = 30<br>然后执行 /sbin/sysctl -p 让参数生效。</p>
+<p>net.ipv4.tcp_syncookies = 1 表示开启SYN cookies。当出现SYN等待队列溢出时，启用cookies来处理，可防范少量SYN攻击，默认为0，表示关闭；<br>net.ipv4.tcp_tw_reuse = 1 表示开启重用。允许将TIME-WAIT sockets重新用于新的TCP连接，默认为0，表示关闭；<br>net.ipv4.tcp_tw_recycle = 1 表示开启TCP连接中TIME-WAIT sockets的快速回收，默认为0，表示关闭。<br>net.ipv4.tcp_fin_timeout 修改系統默认的 TIMEOUT 时间</p>
+<p>注：在修改配置后需要查看时间戳是否支持，如果是0则修改为1，查看方法如下：<br>cat /proc/sys/net/ipv4/tcp_timestamps</p>
+]]></content>
+      
+        
+    </entry>
+    
+    <entry>
+      <title></title>
+      <url>/2020/08/01/%E5%8D%95%E5%BA%94%E7%94%A8%E7%A8%8B%E5%BA%8F%E9%83%A8%E7%BD%B2/</url>
+      <content type="html"><![CDATA[<h1 id="单应用程序部署"><a href="#单应用程序部署" class="headerlink" title="单应用程序部署"></a>单应用程序部署</h1><h2 id="docker部署"><a href="#docker部署" class="headerlink" title="docker部署"></a>docker部署</h2><ol>
+<li><p>编写Dockerfile，新建一个Dockerfile，输入下面内容</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"># Docker image for springboot file run</span><br><span class="line"># VERSION 0.0.1</span><br><span class="line"># Author: liubingxu</span><br><span class="line">FROM java:8</span><br><span class="line">MAINTAINER eangulee &lt;liubingxu18@gmail.com&gt;</span><br><span class="line"># VOLUME 指定了临时文件目录为&#x2F;tmp。</span><br><span class="line"># 其效果是在主机 &#x2F;var&#x2F;lib&#x2F;docker 目录下创建了一个临时文件，并链接到容器的&#x2F;tmp</span><br><span class="line">VOLUME &#x2F;tmp</span><br><span class="line"># 将jar包添加到容器中并更名为app.jar</span><br><span class="line">ADD target&#x2F;demo-0.0.1-SNAPSHOT.jar app.jar</span><br><span class="line"># 运行jar包</span><br><span class="line">RUN echo &quot;Asia&#x2F;Shanghai&quot; &gt; &#x2F;etc&#x2F;timezone</span><br><span class="line">RUN dpkg-reconfigure -f noninteractive tzdata</span><br><span class="line">RUN bash -c &#39;touch &#x2F;app.jar&#39;</span><br><span class="line">ENTRYPOINT [&quot;java&quot;,&quot;-Djava.security.egd&#x3D;file:&#x2F;dev&#x2F;.&#x2F;urandom&quot;,&quot;-jar&quot;,&quot;&#x2F;app.jar&quot;]</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>编写Linux启动脚本，输入下面内容</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">mvn clean package -Dmaven.test.skip&#x3D;true</span><br><span class="line">containerName&#x3D;&quot;app-name&quot;</span><br><span class="line">imageName&#x3D;&quot;app-name-container&quot;</span><br><span class="line"></span><br><span class="line">docker stop $&#123;containerName&#125;</span><br><span class="line">docker rm $&#123;containerName&#125;</span><br><span class="line">docker rmi $&#123;imageName&#125;:latest</span><br><span class="line"></span><br><span class="line">docker build -t $&#123;imageName&#125; .</span><br><span class="line">docker run -d --privileged --name $&#123;containerName&#125; -v &#x2F;etc&#x2F;localtime:&#x2F;etc&#x2F;localtime -v &#x2F;home&#x2F;logs&#x2F;$&#123;containerName&#125;:&#x2F;tmp -p 80:80 $&#123;imageName&#125;</span><br><span class="line"></span><br><span class="line">docker logs -f $&#123;containerName&#125;</span><br></pre></td></tr></table></figure>
+
+<p>将Windows格式文本转换成Linux格式</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dos2unix + filename</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>编写Windows启动脚本，输入下面内容</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">call mvn clean package -Dmaven.test.skip&#x3D;true</span><br><span class="line"></span><br><span class="line">docker stop app-name</span><br><span class="line">docker rm app-name</span><br><span class="line">docker rmi app-name-container:latest</span><br><span class="line"></span><br><span class="line">docker build -t app-name-container .</span><br><span class="line">docker run --name app-name -p 80:80 app-name-container</span><br></pre></td></tr></table></figure>
+
+
+</li>
+</ol>
+<h2 id="服务形式部署"><a href="#服务形式部署" class="headerlink" title="服务形式部署"></a>服务形式部署</h2><ol>
+<li><p>pom添加服务化支持</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&lt;plugin&gt;</span><br><span class="line">    &lt;groupId&gt;org.springframework.boot&lt;&#x2F;groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;spring-boot-maven-plugin&lt;&#x2F;artifactId&gt;</span><br><span class="line">    &lt;configuration&gt;</span><br><span class="line">       &lt;executable&gt;true&lt;&#x2F;executable&gt;</span><br><span class="line">    &lt;&#x2F;configuration&gt;</span><br><span class="line">&lt;&#x2F;plugin&gt;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>编写start.sh</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">mvn clean package -Dmaven.test.skip&#x3D;true</span><br><span class="line">service myapp stop</span><br><span class="line">workDir&#x3D;$(pwd)</span><br><span class="line">echo $&#123;workDir&#125;</span><br><span class="line">rm -rf &#x2F;etc&#x2F;init.d&#x2F;myapp</span><br><span class="line">chmod +x $&#123;workDir&#125;&#x2F;target&#x2F;demo-0.0.1-SNAPSHOT.jar</span><br><span class="line">sudo ln -s $&#123;workDir&#125;&#x2F;target&#x2F;demo-0.0.1-SNAPSHOT.jar &#x2F;etc&#x2F;init.d&#x2F;myapp</span><br><span class="line">service myapp start</span><br><span class="line">tail -f &#x2F;var&#x2F;log&#x2F;myapp.log</span><br></pre></td></tr></table></figure></li>
+</ol>
+]]></content>
+      
+        
+    </entry>
+    
+    <entry>
+      <title></title>
+      <url>/2020/08/01/hadoop/</url>
+      <content type="html"><![CDATA[<h1 id="hadoop学习"><a href="#hadoop学习" class="headerlink" title="hadoop学习"></a>hadoop学习</h1><h2 id="环境安装"><a href="#环境安装" class="headerlink" title="环境安装"></a>环境安装</h2><h3 id="docker安装hadoop单节点"><a href="#docker安装hadoop单节点" class="headerlink" title="docker安装hadoop单节点"></a>docker安装hadoop单节点</h3><h4 id="下载镜像"><a href="#下载镜像" class="headerlink" title="下载镜像"></a>下载镜像</h4><p>docker pull sequenceiq/hadoop-docker</p>
+<h4 id="运行容器"><a href="#运行容器" class="headerlink" title="运行容器"></a>运行容器</h4><p>docker run -i -t -p 50070:50070 -p 8020:8020 -p 9000:9000 -p 8088:8088 -p 8040:8040 -p 8042:8042 -p 49707:49707 -p 50010:50010 -p 50075:50075 -p 50090:50090 sequenceiq/hadoop-docker /etc/bootstrap.sh -bash  </p>
+<h4 id="配置环境变量"><a href="#配置环境变量" class="headerlink" title="配置环境变量"></a>配置环境变量</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vi /etc/profile</span><br></pre></td></tr></table></figure>
+
+<p>在文件最下面输入：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">export HADOOP_HOME=&quot;/usr/local/hadoop-2.7.0&quot;</span><br><span class="line">export PATH=$HADOOP_HOME/bin:$HADOOP_HOME/sbin:$PATH</span><br></pre></td></tr></table></figure>
+
+<p>保存，刷新环境变量</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">source /etc/profile</span><br></pre></td></tr></table></figure>
+
+<h4 id="hadoop首页"><a href="#hadoop首页" class="headerlink" title="hadoop首页"></a>hadoop首页</h4><p> <a href="http://192.168.0.106:50070/">http://192.168.0.106:50070/</a> </p>
+<h4 id="docker配置hadoop开机启动"><a href="#docker配置hadoop开机启动" class="headerlink" title="docker配置hadoop开机启动"></a>docker配置hadoop开机启动</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker update --restart&#x3D;always 容器Id</span><br></pre></td></tr></table></figure>
+
+<h4 id="配置jdK环境变量"><a href="#配置jdK环境变量" class="headerlink" title="配置jdK环境变量"></a>配置jdK环境变量</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cd &#x2F;usr&#x2F;local&#x2F;hadoop-2.7.0&#x2F;etc&#x2F;hadoop&#x2F;</span><br><span class="line"></span><br><span class="line">vi &#x2F;hadoop-env.sh</span><br></pre></td></tr></table></figure>
+
+<h4 id="配置默认文件存储"><a href="#配置默认文件存储" class="headerlink" title="配置默认文件存储"></a>配置默认文件存储</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vi core-site.xml</span><br></pre></td></tr></table></figure>
+
+<p>加入</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"> &lt;property&gt;</span><br><span class="line">      &lt;name&gt;fs.defaultFS&lt;&#x2F;name&gt;</span><br><span class="line">      &lt;value&gt;hdfs:&#x2F;&#x2F;7e751b9fd307:9000&lt;&#x2F;value&gt;</span><br><span class="line"> &lt;&#x2F;property&gt;</span><br><span class="line"> &lt;property&gt;</span><br><span class="line">     &lt;name&gt;hadoop.tmp.dir&lt;&#x2F;name&gt;</span><br><span class="line">     &lt;value&gt;&#x2F;home&#x2F;lbx&#x2F;bigdata&lt;&#x2F;value&gt;</span><br><span class="line"> &lt;&#x2F;property&gt;</span><br><span class="line">适用于非分布式文件系统 (DFS) 使用的保留空间（字节&#x2F;卷）</span><br><span class="line">&lt;property&gt;</span><br><span class="line">    &lt;name&gt;dfs.datanode.du.reserved&lt;&#x2F;name&gt;</span><br><span class="line">    &lt;value&gt;400000000000&lt;&#x2F;value&gt;</span><br><span class="line">&lt;&#x2F;property&gt;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vi hdfs-site.xml</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&lt;property&gt;</span><br><span class="line">      &lt;name&gt;dfs.datanode.data.dir&lt;&#x2F;name&gt;</span><br><span class="line">      &lt;value&gt;&#x2F;home&#x2F;lbx&#x2F;bigdata&lt;&#x2F;value&gt;</span><br><span class="line">&lt;&#x2F;property&gt;</span><br><span class="line">&lt;property&gt;</span><br><span class="line">     &lt;name&gt;dfs.webhdfs.enabled&lt;&#x2F;name&gt;</span><br><span class="line">     &lt;value&gt;true&lt;&#x2F;value&gt;</span><br><span class="line">&lt;&#x2F;property&gt;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vi yarn-site.xml</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&lt;property&gt;</span><br><span class="line">     &lt;name&gt;yarn.nodemanager.aux-services&lt;&#x2F;name&gt;</span><br><span class="line">     &lt;value&gt;mapreduce_shuffle&lt;&#x2F;value&gt;</span><br><span class="line">&lt;&#x2F;property&gt;</span><br></pre></td></tr></table></figure>
+
+
+
+<h4 id="NameNode关闭安全模式"><a href="#NameNode关闭安全模式" class="headerlink" title="NameNode关闭安全模式"></a>NameNode关闭安全模式</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;usr&#x2F;loca&#x2F;hadoop-2.7.0&#x2F;bin&#x2F;hadoop dfsadmin -safemode leave</span><br></pre></td></tr></table></figure>
+
+<h3 id="非docker安装"><a href="#非docker安装" class="headerlink" title="非docker安装"></a>非docker安装</h3><ol>
+<li><p>jdk安装</p>
+<ul>
+<li>搜索jdk </li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install java-1.8.0-openjdk</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>安装jdk</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install java-1.8.0-openjdk &amp;&amp; yum install java-1.8.0-openjdk-devel.x86_64</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>配置jdk环境变量</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vi &#x2F;etc&#x2F;profile</span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<p>​      将如下配置添加至文件中，然后保存退出 </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">JAVA_HOME&#x3D;&#x2F;usr&#x2F;lib&#x2F;jvm&#x2F;java-1.8.0-openjdk-1.8.0.252.b09-2.el7_8.x86_64</span><br><span class="line">JRE_HOME&#x3D;$JAVA_HOME&#x2F;jre</span><br><span class="line">CLASS_PATH&#x3D;.:$JAVA_HOME&#x2F;lib&#x2F;dt.jar:$JAVA_HOME&#x2F;lib&#x2F;tools.jar:$JRE_HOME&#x2F;lib</span><br><span class="line">PATH&#x3D;$PATH:$JAVA_HOME&#x2F;bin:$JRE_HOME&#x2F;bin</span><br><span class="line">export JAVA_HOME JRE_HOME CLASS_PATH PATH</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>刷新环境变量</p>
+<p>source /etc/profile</p>
+</li>
+<li><p>测试jdk是否安装成功</p>
+<p>java、javac、jps是否有响应</p>
+</li>
+</ul>
+</li>
+<li><p>hadoop安装</p>
+</li>
+</ol>
+<ul>
+<li>下载 wget <a href="http://archive.apache.org/dist/hadoop/core/hadoop-2.7.0/hadoop-2.7.0.tar.gz">http://archive.apache.org/dist/hadoop/core/hadoop-2.7.0/hadoop-2.7.0.tar.gz</a></li>
+<li>解压 tar -zxvf hadoop-2.7.0.tar.gz</li>
+<li>配置jdk环境变量</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">vi &#x2F;home&#x2F;lbx&#x2F;hadoop-2.7.0&#x2F;etc&#x2F;hadoop&#x2F;hadoop-env.sh </span><br><span class="line">export JAVA_HOME&#x3D;&#x2F;usr&#x2F;lib&#x2F;jvm&#x2F;java-1.8.0-openjdk-1.8.0.252.b09-2.el7_8.x86_64 </span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>配置hadoop环境变量</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vi &#x2F;etc&#x2F;profile</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">export HADOOP_HOME&#x3D;&#x2F;home&#x2F;lbx&#x2F;hadoop-2.7.0</span><br><span class="line">export PATH&#x3D;$HADOOP_HOME&#x2F;bin:$HADOOP_HOME&#x2F;sbin:$PATH</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">source &#x2F;etc&#x2F;profile</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>配置core-site.xml </p>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">vi &#x2F;home&#x2F;lbx&#x2F;hadoop-2.7.0&#x2F;etc&#x2F;hadoop&#x2F;core-site.xml  </span><br><span class="line">&lt;property&gt;</span><br><span class="line">    &lt;name&gt;fs.defaultFS&lt;&#x2F;name&gt;</span><br><span class="line">    &lt;value&gt;hdfs:&#x2F;&#x2F;127.0.0.1:9000&lt;&#x2F;value&gt;                               </span><br><span class="line">&lt;&#x2F;property&gt;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>配置hdfs-site.xml</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">vi etc&#x2F;hadoop&#x2F;hdfs-site.xml</span><br><span class="line">&lt;property&gt;</span><br><span class="line">     &lt;name&gt;dfs.replication&lt;&#x2F;name&gt;</span><br><span class="line">    &lt;value&gt;1&lt;&#x2F;value&gt;</span><br><span class="line">&lt;&#x2F;property&gt;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>配置无密登录</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssh-keygen &amp;&amp; cat ~&#x2F;.ssh&#x2F;id_rsa.pub &gt;&gt; ~&#x2F;.ssh&#x2F;authorized_keys &amp;&amp; chmod 600 ~&#x2F;.ssh&#x2F;authorized_keys</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>格式化namenode</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hdfs namenode -format</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>启动hdfs</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">start-dfs.sh</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>在浏览器测试：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http:&#x2F;&#x2F;192.168.0.107:50070 </span><br></pre></td></tr></table></figure>
+
+</li>
+</ul>
+<h2 id="HDFS-Api"><a href="#HDFS-Api" class="headerlink" title="HDFS Api"></a>HDFS Api</h2><h2 id="永久关闭selinux"><a href="#永久关闭selinux" class="headerlink" title="永久关闭selinux"></a>永久关闭selinux</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">vi &#x2F;etc&#x2F;selinux&#x2F;config</span><br><span class="line">SELINUX&#x3D;enforcing改为SELINUX&#x3D;disabled </span><br></pre></td></tr></table></figure>
+
+<h2 id="临时关闭selinux"><a href="#临时关闭selinux" class="headerlink" title="临时关闭selinux"></a>临时关闭selinux</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">setenforce 0</span><br></pre></td></tr></table></figure>
+
+<h2 id=""><a href="#" class="headerlink" title=""></a></h2><h2 id="开机启动"><a href="#开机启动" class="headerlink" title="开机启动"></a>开机启动</h2><ol>
+<li><p>添加启动脚本</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd &#x2F;etc&#x2F;init.d&#x2F;</span><br><span class="line">vi&#x2F;etc&#x2F;init.d&#x2F;hadoop</span><br></pre></td></tr></table></figure>
+
+<p>加入下面代码</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">#!&#x2F;bin&#x2F;bash</span><br><span class="line">#chkconfig:35 95 1</span><br><span class="line">#description:script to start&#x2F;stop hadoop</span><br><span class="line">su - hadoop &lt;&lt;!</span><br><span class="line">case $1 in</span><br><span class="line">start)</span><br><span class="line">sh start-all.sh</span><br><span class="line">;;</span><br><span class="line">stop)</span><br><span class="line">sh stop-all.sh</span><br><span class="line">;;</span><br><span class="line">*)</span><br><span class="line">echo &quot;Usage:$0(start|stop)&quot;</span><br><span class="line">;;</span><br><span class="line">esac</span><br><span class="line">exit</span><br></pre></td></tr></table></figure>
+
+
+
+</li>
+</ol>
+<ol start="2">
+<li><p>添加执行权限</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo chmod +x &#x2F;etc&#x2F;init.d&#x2F;hadoop</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>设置hadoop服务开机自启动</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo chkconfig --add hadoop</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>查看hadoop服务</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chkconfig --list hadoop</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+</li>
+</ol>
+]]></content>
+      
+        
+    </entry>
+    
+    <entry>
+      <title><![CDATA[Hello World]]></title>
+      <url>/2020/08/01/hello-world/</url>
+      <content type="html"><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
+<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
+<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
+<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
+<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+]]></content>
+      
+        
+    </entry>
+    
+  
+  
+</search>
